@@ -2,7 +2,6 @@
 import React from 'react'
 import { Col, Card, Button } from 'react-bootstrap'
 
-
 const Menus = ({ menu }) => {
   // Fungsi untuk menambahkan item ke cart
   const addToCart = () => {
@@ -44,7 +43,10 @@ const Menus = ({ menu }) => {
         <Card.Img
           variant='top'
           className='rounded-4'
-          src={'/images/product/' + menu.image}
+          src={
+            'https://raw.githubusercontent.com/rennwebsite/ec-site/refs/heads/main/public/images/product/' +
+            menu.image
+          }
         />
         <Card.Body>
           <Card.Title>{menu.name}</Card.Title>
@@ -63,3 +65,4 @@ const Menus = ({ menu }) => {
 }
 
 export default Menus
+//src={'/images/product/' + menu.image}

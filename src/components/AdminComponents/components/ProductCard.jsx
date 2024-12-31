@@ -12,7 +12,10 @@ const ProductCard = ({ product, delProduct}) => {
           variant='top'
           className='rounded-top-4'
           style={{ height: '160px' }}
-          src={'/images/product/' + product.image}
+          src={
+            'https://raw.githubusercontent.com/rennwebsite/ec-site/refs/heads/main/public/images/product/' +
+            product.image
+          }
         />
         <Card.Body>
           <Card.Title>

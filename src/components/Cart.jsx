@@ -72,7 +72,10 @@ const Cart = () => {
                   <Card className='hover-top border-0 rounded-4'>
                     <Card.Img
                       variant='top'
-                      src={'/images/product/' + item.product.image}
+                      src={
+            'https://raw.githubusercontent.com/rennwebsite/ec-site/refs/heads/main/public/images/product/' +
+            item.product.image
+          }
                       style={{
                         height: '150px',
                         objectFit: 'cover',
