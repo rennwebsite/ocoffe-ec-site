@@ -10,7 +10,7 @@ const CekOrder = () => {
 
   useEffect(() => {
     axios
-      .get(API_URL + "orders")
+      .get(API_URL('orders'))
       .then((res) => {
         setOrders(res.data) // Simpan langsung data dari API
       })

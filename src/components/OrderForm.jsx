@@ -39,7 +39,7 @@ const OrderForm = ({ cart, onOrderPlaced }) => {
     };
 
     try {
-      const response = await axios.post(API_URL + "orders", orderData);
+      const response = await axios.post(API_URL('orders'), orderData);
 
       if (response.status === 200 || response.status === 201) {
         alert("Order placed successfully!");

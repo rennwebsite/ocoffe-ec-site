@@ -30,7 +30,7 @@ const AddProduct = ({ handleSwitchPage, newproducts, getNewproducts }) => {
     }
 
     axios
-      .post(API_URL + 'newproducts', productData)
+      .post(API_URL('newproducts'), productData)
       .then((res) => {
         alert('Product placed successfully!')
         getNewproducts()

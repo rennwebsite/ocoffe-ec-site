@@ -22,7 +22,7 @@ const ManageOrders = ({ orders, getOrders }) => {
     const data = { ...order, status: status }
 
     try {
-      await axios.put(`${API_URL}orders/${id}`, data)
+      await axios.put(API_URL('orders', id), data)
       alert('Status order berhasil diperbarui')
       getOrders()
     } catch (err) {

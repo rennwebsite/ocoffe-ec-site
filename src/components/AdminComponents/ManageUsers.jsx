@@ -12,10 +12,11 @@ const ManageUsers = () => {
 
   const getUsers = () => {
     axios
-      .get(API_URL + 'users')
+      .get(API_URL('users'))
       .then((res) => {
         const data = res.data
-        setUsers(data)
+        const dataArray = Object.values(data)
+        setUsers(dataArray)
       })
       .catch((err) => {
         console.log('eror get users\n' + err)
@@ -24,7 +25,7 @@ const ManageUsers = () => {
 
   const delUser = (id) => {
     axios
-      .delete(`${API_URL}users/${id}`)
+      .delete(API_URL('users', id))
       .then((res) => {
         alert('delete user successful')
         getUsers()
@@ -54,8 +55,8 @@ const ManageUsers = () => {
           </tr>
         </thead>
         {users &&
-          users.map((user) => {
-            return <UserTable key={user.id} user={user} delUser={delUser} />
+          users.map((user, index) => {
+            return <UserTable key={index} user={user} delUser={delUser} />
           })}
       </Table>
     </Container>

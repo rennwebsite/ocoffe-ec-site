@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
+import { Form, Button, Alert, Card, Container } from 'react-bootstrap'
 import { API_URL } from '../utils/constans'
 
 const Login = () => {
@@ -14,19 +15,16 @@ const Login = () => {
 
   useEffect(() => {
     axios
-      .get(API_URL + 'users')
+      .get(API_URL('users'))
       .then((res) => {
         const data = res.data
-        setUsersData(data)
+        const dataArray = Object.values(data)
+        setUsersData(dataArray)
       })
       .catch((err) => {
-        console.log('eror get usersData\n' + err)
+        console.log('Error fetching users data:', err)
       })
   }, [])
-
-  const db = {
-    users: usersData,
-  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -35,7 +33,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const user = db.users.find(
+    const user = usersData?.find(
       (u) =>
         (u.username === credentials.usernameOrEmail ||
           u.email === credentials.usernameOrEmail) &&
@@ -43,56 +41,65 @@ const Login = () => {
     )
 
     if (user) {
-      localStorage.setItem('role', user.role) // Simpan role di localStorage
+      localStorage.setItem('role', user.role)
+      localStorage.setItem('username', user.username)
       setError('')
       alert(`Login berhasil sebagai ${user.role}`)
-
-      const name = user.username
-      localStorage.setItem('username', name)
-      // Navigate to specific path
-      navigate('/')
+      navigate('/dashboard')
     } else {
       setError('Username/email atau password salah.')
     }
   }
 
   return (
-    <div
-      style={{ maxWidth: '400px', margin: '50px auto', textAlign: 'center' }}
+    <Container
+      className='d-flex justify-content-center align-items-center'
+      style={{ minHeight: '100vh' }}
     >
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type='text'
-            name='usernameOrEmail'
-            placeholder='Username atau Email'
-            value={credentials.usernameOrEmail}
-            onChange={handleInputChange}
-            style={{ width: '100%', padding: '10px', margin: '10px 0' }}
-            required
-          />
-        </div>
-        <div>
-          <input
-            type='password'
-            name='password'
-            placeholder='Password'
-            value={credentials.password}
-            onChange={handleInputChange}
-            style={{ width: '100%', padding: '10px', margin: '10px 0' }}
-            required
-          />
-        </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button
-          type='submit'
-          style={{ padding: '10px 20px', cursor: 'pointer' }}
-        >
-          Login
-        </button>
-      </form>
-    </div>
+      <Card style={{ width: '100%', maxWidth: '400px', padding: '20px' }}>
+        <Card.Body>
+          <h3 className='text-center'>Login</h3>
+          <Form onSubmit={handleSubmit}>
+            {error && <Alert variant='danger'>{error}</Alert>}
+            <Form.Group controlId='formUsernameOrEmail'>
+              <Form.Label>Username atau Email</Form.Label>
+              <Form.Control
+                type='text'
+                name='usernameOrEmail'
+                placeholder='Masukkan username atau email'
+                value={credentials.usernameOrEmail}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId='formPassword' className='mt-3'>
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type='password'
+                name='password'
+                placeholder='Masukkan password'
+                value={credentials.password}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+            <Button variant='primary' type='submit' className='mt-4 w-100'>
+              Login
+            </Button>
+          </Form>
+          <div className='text-center mt-3'>
+            <p>
+              Don't have an account?{' '}
+              <Link to='/signup' className='text-primary'>
+                Signup
+              </Link>
+            </p>
+          </div>
+        </Card.Body>
+      </Card>
+    </Container>
   )
 }
 

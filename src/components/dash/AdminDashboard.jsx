@@ -14,7 +14,7 @@ import {
 
 const AdminDashboard = () => {
   const [navigationPage, setNavigationPage] = useState('ManageUsers')
-  const [orders, setOrders] = useState(null)
+  const [orders, setOrders] = useState([])
   const [products, setProducts] = useState(null)
 
   useEffect(() => {
@@ -24,27 +24,31 @@ const AdminDashboard = () => {
 
   const getOrders = () => {
     axios
-      .get(API_URL + 'orders')
+      .get(API_URL('orders'))
       .then((res) => {
         const data = res.data
-        setOrders(data)
+        // Mengonversi data objek menjadi array
+        const ordersArray = Object.values(data)
+        setOrders(ordersArray)
       })
       .catch((err) => {
-        console.log('eror get orders\n' + err)
+        console.log('Error getting orders\n' + err)
       })
   }
 
   const getProducts = () => {
     axios
-      .get(API_URL + 'products')
+      .get(API_URL('products'))
       .then((res) => {
         const data = res.data
-        setProducts(data)
+        const dataArray = Object.values(data)
+        setProducts(dataArray)
       })
       .catch((err) => {
         console.log('eror get orders\n' + err)
       })
   }
+  
 
   const db = {
     componentsName: [
@@ -60,7 +64,11 @@ const AdminDashboard = () => {
 
   return (
     <div style={{ minHeight: '100vh' }} className=''>
-      <BottomBar page={db.componentsName} handlePutPage={handlePutPage} navigationPage={navigationPage}/>
+      <BottomBar
+        page={db.componentsName}
+        handlePutPage={handlePutPage}
+        navigationPage={navigationPage}
+      />
       <Row>
         <Col xs={0} md={1}>
           {/*DashboardNavbar*/}

@@ -15,7 +15,7 @@ export default class Home extends Component {
   }
   componentDidMount() {
     axios
-      .get(API_URL + 'products')
+      .get(API_URL('products'))
       .then((res) => {
         const menus = res.data
         this.setState({ menus })
@@ -31,7 +31,7 @@ export default class Home extends Component {
         <Container>
           <Row className='mt-4'>
             {this.state.menus &&
-              this.state.menus.map((menu) => {
+              this.state.menus.filter((product) => product !== null).map((menu) => {
                 return <Menus key={menu.id} menu={menu} />
               })}
           </Row>

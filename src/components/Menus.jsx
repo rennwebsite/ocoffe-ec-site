@@ -44,7 +44,7 @@ const Menus = ({ menu }) => {
           variant='top'
           className='rounded-4'
           src={
-            'https://raw.githubusercontent.com/rennwebsite/ec-site/refs/heads/main/public/images/product/' +
+            '/images/product/' +
             menu.image
           }
         />

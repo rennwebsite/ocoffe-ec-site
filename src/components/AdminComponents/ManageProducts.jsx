@@ -4,22 +4,25 @@ import { ProductCard, AddProduct } from './components'
 import axios from 'axios'
 import { API_URL } from '../../utils/constans'
 
-const ManageProducts = ({ products, getProducts }) => {
+
+
+  const ManageProducts = ({ products, getProducts }) => {
   const [page, setPage] = useState('productsPage')
   const [newproducts, setNewproducts] = useState(null)
 
   useEffect(() => {
     getNewproducts()
   }, [])
+
   const getNewproducts = () => {
     axios
-      .get(API_URL + 'newproducts')
+      .get(API_URL('newproducts'))
       .then((res) => {
         const data = res.data
         setNewproducts(data)
       })
       .catch((err) => {
-        console.log('eror get newproducts\n' + err)
+        console.log('error getting newproducts\n' + err)
       })
   }
 
@@ -29,13 +32,13 @@ const ManageProducts = ({ products, getProducts }) => {
 
   const delProduct = (id) => {
     axios
-      .delete(`${API_URL}products/${id}`)
+      .delete(API_URL('products', id))
       .then((res) => {
-        alert('sukses menghapus pesanan')
+        alert('sukses menghapus produk')
         getProducts()
       })
       .catch((err) => {
-        console.log('eror del product\n' + err)
+        console.log('error deleting product\n' + err)
       })
   }
 
@@ -59,15 +62,17 @@ const ManageProducts = ({ products, getProducts }) => {
           </Row>
           <Row>
             {products &&
-              products.map((product) => {
-                return (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    delProduct={delProduct}
-                  />
-                )
-              })}
+              products
+                .filter((product) => product !== null) // Menyaring null
+                .map((product) => {
+                  return (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      delProduct={delProduct}
+                    />
+                  )
+                })}
           </Row>
         </Container>
       ) : (
