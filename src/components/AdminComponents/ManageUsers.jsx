@@ -25,7 +25,7 @@ const ManageUsers = () => {
 
   const delUser = (id) => {
     axios
-      .delete(API_URL('users', id))
+      .delete(API_URL('users', id -1))
       .then((res) => {
         alert('delete user successful')
         getUsers()

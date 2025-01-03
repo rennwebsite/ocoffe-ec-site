@@ -12,14 +12,13 @@ import {
   ManageUsers,
 } from '../AdminComponents'
 
-const AdminDashboard = () => {
+const AdminDashboard = ({menus, fetchProducts}) => {
   const [navigationPage, setNavigationPage] = useState('ManageUsers')
   const [orders, setOrders] = useState([])
   const [products, setProducts] = useState(null)
 
   useEffect(() => {
     getOrders()
-    getProducts()
   }, [])
 
   const getOrders = () => {
@@ -36,19 +35,18 @@ const AdminDashboard = () => {
       })
   }
 
-  const getProducts = () => {
-    axios
-      .get(API_URL('products'))
-      .then((res) => {
-        const data = res.data
-        const dataArray = Object.values(data)
-        setProducts(dataArray)
-      })
-      .catch((err) => {
-        console.log('eror get orders\n' + err)
-      })
-  }
-  
+  // const getProducts = () => {
+  //   axios
+  //     .get(API_URL('products'))
+  //     .then((res) => {
+  //       const data = res.data
+  //       const dataArray = Object.values(data)
+  //       setProducts(dataArray)
+  //     })
+  //     .catch((err) => {
+  //       console.log('eror get orders\n' + err)
+  //     })
+  // }
 
   const db = {
     componentsName: [
@@ -85,7 +83,7 @@ const AdminDashboard = () => {
           ) : navigationPage === 'ManageOrders' ? (
             <ManageOrders orders={orders} getOrders={getOrders} />
           ) : navigationPage === 'ManageProducts' ? (
-            <ManageProducts products={products} getProducts={getProducts} />
+            <ManageProducts menus={menus} fetchProducts={fetchProducts} />
           ) : navigationPage === 'ManageUsers' ? (
             <ManageUsers />
           ) : (

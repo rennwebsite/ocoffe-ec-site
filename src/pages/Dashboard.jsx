@@ -6,7 +6,7 @@ import {
   DemoDashboard,
 } from '../components/dash'
 
-const Dashboard = () => {
+const Dashboard = ({menus, fetchProducts}) => {
   const [page, setPage] = useState(null)
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const Dashboard = () => {
   return (
     <div style={{ background: '#DFECF2' }}>
       {page === 'admin' ? (
-        <AdminDashboard />
+        <AdminDashboard menus={menus} fetchProducts={fetchProducts} />
       ) : page === 'user' ? (
         <UserDashboard />
       ) : page === 'affiliate' ? (

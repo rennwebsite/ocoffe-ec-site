@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Row, Col, Card, Button } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
 import { ProductCard, AddProduct } from './components'
 import axios from 'axios'
 import { API_URL } from '../../utils/constans'
 
-
-
-  const ManageProducts = ({ products, getProducts }) => {
+const ManageProducts = ({ menus, fetchProducts }) => {
   const [page, setPage] = useState('productsPage')
+  const [products, setProducts] = useState([])
   const [newproducts, setNewproducts] = useState(null)
 
+  // Sinkronisasi state `products` dengan `menus` dari props
   useEffect(() => {
-    getNewproducts()
-  }, [])
+    setProducts(menus)
+  }, [menus])
 
   const getNewproducts = () => {
     axios
@@ -22,9 +22,13 @@ import { API_URL } from '../../utils/constans'
         setNewproducts(data)
       })
       .catch((err) => {
-        console.log('error getting newproducts\n' + err)
+        console.log('Error getting newproducts\n' + err)
       })
   }
+
+  useEffect(() => {
+    getNewproducts()
+  }, [])
 
   const handleSwitchPage = (v) => {
     setPage(v)
@@ -32,14 +36,14 @@ import { API_URL } from '../../utils/constans'
 
   const delProduct = (id) => {
     axios
-      .delete(API_URL('products', id))
-      .then((res) => {
-        alert('sukses menghapus produk')
-        getProducts()
+      .delete(API_URL('products', id -1))
+      .then(() => {
+        alert('Sukses menghapus produk')
+        fetchProducts() // Memanggil fungsi dari parent untuk memperbarui data `menus`
+        // Memperbarui state `products` lokal
+        setProducts((prev) => prev.filter((product) => product.id !== id))
       })
-      .catch((err) => {
-        console.log('error deleting product\n' + err)
-      })
+      .catch((err) => console.log('Error deleting product\n' + err))
   }
 
   return (
@@ -62,27 +66,21 @@ import { API_URL } from '../../utils/constans'
           </Row>
           <Row>
             {products &&
-              products
-                .filter((product) => product !== null) // Menyaring null
-                .map((product) => {
-                  return (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      delProduct={delProduct}
-                    />
-                  )
-                })}
+              products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  delProduct={delProduct}
+                />
+              ))}
           </Row>
         </Container>
       ) : (
-        <>
-          <AddProduct
-            handleSwitchPage={handleSwitchPage}
-            newproducts={newproducts}
-            getNewproducts={getNewproducts}
-          />
-        </>
+        <AddProduct
+          handleSwitchPage={handleSwitchPage}
+          newproducts={newproducts}
+          getNewproducts={getNewproducts}
+        />
       )}
     </>
   )

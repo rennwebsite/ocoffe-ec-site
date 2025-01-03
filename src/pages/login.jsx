@@ -18,11 +18,13 @@ const Login = () => {
       .get(API_URL('users'))
       .then((res) => {
         const data = res.data
-        const dataArray = Object.values(data)
-        setUsersData(dataArray)
+        const filteredData = Object.values(data).filter(
+          (item) => item !== null && typeof item === 'object',
+        )
+        setUsersData(filteredData)
       })
       .catch((err) => {
-        console.log('Error fetching users data:', err)
+        console.error('Error saat mengambil data users\n' + err)
       })
   }, [])
 
