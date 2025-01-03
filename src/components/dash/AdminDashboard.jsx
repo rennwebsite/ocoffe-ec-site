@@ -13,7 +13,7 @@ import {
 } from '../AdminComponents'
 
 const AdminDashboard = ({menus, fetchProducts}) => {
-  const [navigationPage, setNavigationPage] = useState('ManageUsers')
+  const [navigationPage, setNavigationPage] = useState('ManageDashboard')
   const [orders, setOrders] = useState([])
   const [products, setProducts] = useState(null)
 
